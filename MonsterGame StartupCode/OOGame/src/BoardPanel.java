@@ -4,7 +4,8 @@ import javax.swing.*;
 
 import java.awt.*;
 
-/* This panel represents the game board (grid) 
+/* s9971085 Mark Forcina
+ * This panel represents the game board (grid) 
  * It also responds to game related events
  * The overridden paintcompnent() is called whenever the board
  * or the pieces needs to be updated 
