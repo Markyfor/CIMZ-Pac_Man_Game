@@ -1,11 +1,15 @@
-import javax.swing.*;
+ import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 /* This class is the main System level class which creates all the objects 
  * representing the game logic (model) and the panel for user interaction. 
  * It also implements the main game loop 
  */
+
+
 
 public class Game extends JFrame {
 
@@ -108,6 +112,43 @@ public class Game extends JFrame {
    
    public static void main(String args[]) throws Exception
    {
+	   
+	   final JFrame frame = new JFrame("Monster Hunt Pacman Style");
+	   final JButton btnRegister = new JButton("Click to Register");
+       final JButton btnLogin = new JButton("Click to Login");
+
+       btnLogin.addActionListener(
+               new ActionListener(){
+                   public void actionPerformed(ActionEvent e) {
+                       LoginDialog loginDlg = new LoginDialog(frame);
+                       loginDlg.setVisible(true);
+                       // if logon successfully
+                       if(loginDlg.isSucceeded()){
+                           btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
+                       }
+                   }
+               });
+       
+       btnRegister.addActionListener(
+               new ActionListener(){
+                   public void actionPerformed(ActionEvent e) {
+                       RegisterDialog registerDlg = new RegisterDialog(frame);
+                       registerDlg.setVisible(true);
+                       // if register successfully
+                       Register p1 = new Register(registerDlg.setUsername(), registerDlg.setPassword(), registerDlg.setName(), registerDlg.setDateOfBirth(), registerDlg.setEmail());
+                       if(registerDlg.isSucceeded()){
+                           btnLogin.setText("Hi " + registerDlg.getUsername() + "!\nYou are successfully register to Play");
+                       }
+                   }
+               });
+
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setSize(300, 100);
+       frame.setLayout(new FlowLayout());
+       frame.getContentPane().add(btnLogin);
+       frame.getContentPane().add(btnRegister);
+       frame.setVisible(true);
+       
        Game game = new Game();
        game.setTitle("Monster Game");
        game.setSize(700,700);
