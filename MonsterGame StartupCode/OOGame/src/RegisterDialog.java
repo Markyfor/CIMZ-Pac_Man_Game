@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,28 +18,35 @@ import javax.swing.border.LineBorder;
 
 public class RegisterDialog extends JDialog {
 	 
-    private JTextField tfUsername;
-    private JPasswordField pfPassword;
+    protected JTextField tfUsername;
+    protected JPasswordField pfPassword;
     private JLabel lbUsername;
     private JLabel lbPassword;
-    private JTextField tfName;
+    private JPasswordField pfReconfirmPassword;
+    private JLabel lbReconfirmPassword;
+    protected JTextField tfName;
     private JLabel lbName;
-    private JTextField tfDateOfBirth;
+    protected JTextField tfDateOfBirth;
     private JLabel lbDateOfBirth;
-    private JTextField tfEmail;
+    protected JTextField tfEmail;
     private JLabel lbEmail;
     private JButton btnRegister;
     private JButton btnCancel;
     private boolean succeeded;
+	protected String username;
+	protected String password;
+	protected String name;
+	protected String email;
+	protected String dateOfBirth;
     
-    public RegisterDialog(JTextField tfUsername, JPasswordField pfPassword, JTextField tfName, JTextField tfDateOfBirth,
-    		JTextField tfEmail)
+    public RegisterDialog(String username, String password, String name, String dateOfBirth,
+    		String email)
     {
-    	this.tfUsername = tfUsername;
-    	this.pfPassword = pfPassword;
-    	this.tfName = tfName;
-    	this.tfEmail = tfEmail;
-    	this.tfDateOfBirth = tfDateOfBirth;
+		this.username = username;
+    	this.password = password;
+    	this.name = name;
+    	this.email = email;
+    	this.dateOfBirth = dateOfBirth;
     }
  
     public RegisterDialog(Frame parent) {
@@ -72,40 +80,52 @@ public class RegisterDialog extends JDialog {
         cs.gridy = 1;
         cs.gridwidth = 2;
         panel.add(pfPassword, cs);
+        
+        lbReconfirmPassword = new JLabel("Reconfirm Password: ");
+        cs.gridx = 0;
+        cs.gridy = 2;
+        cs.gridwidth = 1;
+        panel.add(lbReconfirmPassword, cs);
+ 
+        pfReconfirmPassword = new JPasswordField(20);
+        cs.gridx = 1;
+        cs.gridy = 2;
+        cs.gridwidth = 2;
+        panel.add(pfReconfirmPassword, cs);
              
         lbName = new JLabel("Name: ");
         cs.gridx = 0;
-        cs.gridy = 2;
+        cs.gridy = 3;
         cs.gridwidth = 1;
         panel.add(lbName, cs);
  
         tfName = new JTextField(20);
         cs.gridx = 1;
-        cs.gridy = 2;
+        cs.gridy = 3;
         cs.gridwidth = 2;
         panel.add(tfName, cs);
  
         lbEmail = new JLabel("Email: ");
         cs.gridx = 0;
-        cs.gridy = 3;
+        cs.gridy = 4;
         cs.gridwidth = 1;
         panel.add(lbEmail, cs);
  
         tfEmail = new JTextField(20);
         cs.gridx = 1;
-        cs.gridy = 3;
+        cs.gridy = 4;
         cs.gridwidth = 2;
         panel.add(tfEmail, cs);
         
         lbDateOfBirth = new JLabel("Date of Birth: ");
         cs.gridx = 0;
-        cs.gridy = 4;
+        cs.gridy = 5;
         cs.gridwidth = 1;
         panel.add(lbDateOfBirth, cs);
         
         tfDateOfBirth = new JTextField(20);
         cs.gridx = 1;
-        cs.gridy = 4;
+        cs.gridy = 5;
         cs.gridwidth = 2;
         panel.add(tfDateOfBirth, cs);
         panel.setBorder(new LineBorder(Color.GRAY));
@@ -115,21 +135,41 @@ public class RegisterDialog extends JDialog {
         btnRegister.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
-                if (Login.authenticate(getUsername(), getPassword())) {
-                    JOptionPane.showMessageDialog(RegisterDialog.this,
-                            "Hi " + getUsername() + "! You have successfully logged in.",
-                            "Login",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    succeeded = true;
-                    dispose();
-                } else {
+                if (getUsername() != null && getPassword() != null) 
+                {
+                	if(Register.authenticatePassword(getPassword(), getConfirmPassword())) 
+                	{
+                		Login.addUser(getUsername(), getPassword(), getName(), getEmail(), getDateOfBirth());
+        				JOptionPane.showMessageDialog(RegisterDialog.this,
+        						"Hi " + getUsername() + "! You have successfully registered.",
+        						"Login",
+        						JOptionPane.INFORMATION_MESSAGE);
+        				succeeded = true;
+        				dispose();
+                	}
+                	
+                	else
+                	{
+                		JOptionPane.showMessageDialog(RegisterDialog.this,
+        						"Hi " + getUsername() + "! Please enter a valid password",
+        						"Register",
+        						JOptionPane.ERROR_MESSAGE);
+                		dispose();
+                	}
+                }
+                else 
+                {
                     JOptionPane.showMessageDialog(RegisterDialog.this,
                             "Invalid username or password",
-                            "Login",
+                            "Register",
                             JOptionPane.ERROR_MESSAGE);
                     // reset username and password
                     tfUsername.setText("");
                     pfPassword.setText("");
+                    pfReconfirmPassword.setText("");
+                    tfName.setText("");
+                    tfDateOfBirth.setText("");
+                    tfEmail.setText("");
                     succeeded = false;
  
                 }
@@ -176,6 +216,8 @@ public class RegisterDialog extends JDialog {
     
     public JTextField setDateOfBirth()
     {
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+    	//tfDateOfBirth = dateFormat.format((tfDateOfBirth).validate());
     	return this.tfDateOfBirth;
     }
     
@@ -185,6 +227,11 @@ public class RegisterDialog extends JDialog {
  
     public String getPassword() {
         return new String(pfPassword.getPassword());
+    }
+    
+    public String getConfirmPassword() 
+    {
+    	return new String(pfReconfirmPassword.getPassword());
     }
     
     public String getName()

@@ -1,18 +1,25 @@
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.util.*;
+import java.lang.Object;
 
-public class Register extends RegisterDialog{
+public class Register{
 	
-	private static ArrayList<Register> players = new ArrayList<Register>();
-
-	public Register(JTextField tfUsername, JPasswordField pfPassword, JTextField tfName, JTextField tfDateOfBirth,
-			JTextField tfEmail) {
-		super(tfUsername, pfPassword, tfName, tfDateOfBirth, tfEmail);
-		
-		players.add(this);
+	public static boolean authenticatePassword(String password, String confirmPassword)
+	{
+		if(password.compareTo(confirmPassword) == 0)
+        {
+            
+            JOptionPane.showMessageDialog(null,"Password Registered Successfully");
+            return true;
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Password did not match");
+            return false;
+        }
 	}
-	
 	
 	
 	

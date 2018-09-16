@@ -135,15 +135,17 @@ public class Game extends JFrame {
                        RegisterDialog registerDlg = new RegisterDialog(frame);
                        registerDlg.setVisible(true);
                        // if register successfully
-                       Register p1 = new Register(registerDlg.setUsername(), registerDlg.setPassword(), registerDlg.setName(), registerDlg.setDateOfBirth(), registerDlg.setEmail());
                        if(registerDlg.isSucceeded()){
-                           btnLogin.setText("Hi " + registerDlg.getUsername() + "!\nYou are successfully register to Play");
+                    	   for(User user : User.users)
+                    	   {
+                           btnRegister.setText("Hi " + user.getUsername() + "! You are successfully registered to Play");
+                    	   }
                        }
                    }
                });
 
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(300, 100);
+       frame.setSize(300, 300);
        frame.setLayout(new FlowLayout());
        frame.getContentPane().add(btnLogin);
        frame.getContentPane().add(btnRegister);
