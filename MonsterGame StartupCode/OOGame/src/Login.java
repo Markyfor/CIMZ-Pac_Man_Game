@@ -19,7 +19,7 @@ public class Login {
         return false;
     }
     
-    public static User addUser(JTextField tfUsername, JPasswordField pfPassword, JTextField tfName, JTextField tfDateOfBirth,
+/*    public static User addUser(JTextField tfUsername, JPasswordField pfPassword, JTextField tfName, JTextField tfDateOfBirth,
 			JTextField tfEmail)
     {
     	boolean found = false;
@@ -47,44 +47,9 @@ public class Login {
 			{
 				return null;
 			}
-    }
+    }*/
 
-	public static User addUser(String username, String password, String name, String dateOfBirth, String email) 
-	{
-		boolean found = false;
-    	for (User user : User.users)
-    	{
-    		if((username.compareToIgnoreCase(user.getUsername())==0)) 
-    		{
-    			found = true;
-    			JOptionPane.showMessageDialog(null,
-                            "This user" + user.getUsername() +" already exists! Would you like to Login?",
-                            "Login",
-                            JOptionPane.INFORMATION_MESSAGE);
-    			break;
-    		}
-    		
-    		
-    	}
-    	if(!found)
-    	{
-    		for(User player : User.users)
-    		{
-    			if(player == null)
-    			{
-				User user = new User(username, password, name, dateOfBirth, email);
-				User.users.add(user);
-					JOptionPane.showMessageDialog(user, "The player : "+user.getUsername()+" has been added",
-							email, JOptionPane.INFORMATION_MESSAGE);
-				return user;
-    			}
-    		}
-		}
-		return null;
-		
-	}
-    
-    
+	
     
 
 }

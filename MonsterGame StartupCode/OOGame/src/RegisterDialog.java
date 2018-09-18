@@ -26,10 +26,10 @@ public class RegisterDialog extends JDialog {
     private JLabel lbReconfirmPassword;
     protected JTextField tfName;
     private JLabel lbName;
-    protected JTextField tfDateOfBirth;
-    private JLabel lbDateOfBirth;
     protected JTextField tfEmail;
     private JLabel lbEmail;
+    protected JTextField tfDateOfBirth;
+    private JLabel lbDateOfBirth;
     private JButton btnRegister;
     private JButton btnCancel;
     private boolean succeeded;
@@ -39,8 +39,7 @@ public class RegisterDialog extends JDialog {
 	protected String email;
 	protected String dateOfBirth;
     
-    public RegisterDialog(String username, String password, String name, String dateOfBirth,
-    		String email)
+    public RegisterDialog(String username, String password, String name, String email, String dateOfBirth)
     {
 		this.username = username;
     	this.password = password;
@@ -135,14 +134,13 @@ public class RegisterDialog extends JDialog {
         btnRegister.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
-                if (getUsername() != null && getPassword() != null) 
+                if (User.addUser(getUsername(), getPassword(), getName(), getEmail(), getDateOfBirth())!= null) 
                 {
                 	if(Register.authenticatePassword(getPassword(), getConfirmPassword())) 
                 	{
-                		Login.addUser(getUsername(), getPassword(), getName(), getEmail(), getDateOfBirth());
         				JOptionPane.showMessageDialog(RegisterDialog.this,
         						"Hi " + getUsername() + "! You have successfully registered.",
-        						"Login",
+        						"Register",
         						JOptionPane.INFORMATION_MESSAGE);
         				succeeded = true;
         				dispose();
@@ -163,7 +161,7 @@ public class RegisterDialog extends JDialog {
                             "Invalid username or password",
                             "Register",
                             JOptionPane.ERROR_MESSAGE);
-                    // reset username and password
+                    // reset Register fields
                     tfUsername.setText("");
                     pfPassword.setText("");
                     pfReconfirmPassword.setText("");
@@ -239,14 +237,14 @@ public class RegisterDialog extends JDialog {
     	return tfName.getText().trim();
     }
     
-    public String getDateOfBirth()
-    {
-    	return tfDateOfBirth.getText().trim();
-    }
-    
     public String getEmail()
     {
     	return tfEmail.getText().trim();
+    }
+    
+    public String getDateOfBirth()
+    {
+    	return tfDateOfBirth.getText().trim();
     }
  
     public boolean isSucceeded() {

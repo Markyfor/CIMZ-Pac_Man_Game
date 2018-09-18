@@ -3,6 +3,15 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.util.Scanner;
 
 /* This class is the main System level class which creates all the objects 
  * representing the game logic (model) and the panel for user interaction. 
@@ -112,10 +121,37 @@ public class Game extends JFrame {
    
    public static void main(String args[]) throws Exception
    {
+	   Scanner inputStream = null;
+		try {
+
+			inputStream = new Scanner(new File("Users.txt"));
+
+			while (inputStream.hasNextLine()) {
+
+				String line = inputStream.nextLine();
+
+				String[] temp = line.split(":");
+
+				User.addUser(temp[0], temp[1], temp[2], temp[3],temp[4]);
+				
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error opening file" + " Users.txt" ,
+					"Load From File", JOptionPane.ERROR_MESSAGE);
+			System.out.println("Error opening file" + " Users.txt");
+			System.exit(0);
+
+		}
+
+		inputStream.close();
+		
 	   
 	   final JFrame frame = new JFrame("Monster Hunt Pacman Style");
 	   final JButton btnRegister = new JButton("Click to Register");
        final JButton btnLogin = new JButton("Click to Login");
+       final JButton btnPlay = new JButton("Play");
 
        btnLogin.addActionListener(
                new ActionListener(){
@@ -125,6 +161,14 @@ public class Game extends JFrame {
                        // if logon successfully
                        if(loginDlg.isSucceeded()){
                            btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
+                           //btnPlay.setText("Hi " + loginDlg.getUsername() + "! Ready to Play!!");
+                           new Thread(() -> {
+                               Game.run();
+                               SwingUtilities.invokeLater(() -> btnLogin.setText("Ready!!"));
+                   }).start();
+                          // Game.run();
+						
+                           
                        }
                    }
                });
@@ -145,18 +189,79 @@ public class Game extends JFrame {
                });
 
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setTitle("Login Monster Game");
        frame.setSize(300, 300);
        frame.setLayout(new FlowLayout());
+       frame.setLocationRelativeTo(null); 
        frame.getContentPane().add(btnLogin);
        frame.getContentPane().add(btnRegister);
+       //frame.getContentPane().add(btnPlay);
        frame.setVisible(true);
        
-       Game game = new Game();
+       /* Game game = new Game();
        game.setTitle("Monster Game");
        game.setSize(700,700);
        game.setLocationRelativeTo(null);  // center the frame
        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        game.setVisible(true);
-       game.play();
+       game.play();*/
+       
+       
    }
+   
+   public static void run() 
+   {
+	   try {
+			 Game game;
+			 game = new Game();
+			 game.writeToFile();
+			 game.setTitle("Monster Game");
+             game.setSize(700,700);
+             game.setLocationRelativeTo(null);  // center the frame
+             game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+             game.setVisible(true);
+             game.play();
+             
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	   
+   }
+   
+   /*Write to file function
+	 * Will write existing item array to "items.txt" external file which is loaded 
+	 * back into the system upon start.
+	 * Will write items to array when called upon exit also
+	 */
+
+	private void writeToFile() {
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Users.txt")))) {
+			for (User user : User.users) {
+				if(user != null)
+				{
+				writer.write(String.valueOf(user.getUsername()) + ":");
+				writer.write(String.valueOf(user.getPassword()) + ":");
+				writer.write(String.valueOf(user.getName()) + ":");
+				writer.write(String.valueOf(user.getEmail()) + ":");
+				writer.write(String.valueOf(user.getDateOfBirth()+ ":"));
+
+				((BufferedWriter) writer).newLine();
+				}
+			}
+			writer.close();
+
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }
