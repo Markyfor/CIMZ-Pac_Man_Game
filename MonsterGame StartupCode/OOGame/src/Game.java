@@ -151,7 +151,8 @@ public class Game extends JFrame {
 	   final JFrame frame = new JFrame("Monster Hunt Pacman Style");
 	   final JButton btnRegister = new JButton("Click to Register");
        final JButton btnLogin = new JButton("Click to Login");
-       final JButton btnPlay = new JButton("Play");
+       final JButton btnSysAdminLogin = new JButton("System Administrator");
+       final JButton btnRemovePlayer = new JButton("Remove User");
 
        btnLogin.addActionListener(
                new ActionListener(){
@@ -163,7 +164,12 @@ public class Game extends JFrame {
                            btnLogin.setText("Hi " + loginDlg.getUsername() + "!");
                            //btnPlay.setText("Hi " + loginDlg.getUsername() + "! Ready to Play!!");
                            new Thread(() -> {
-                               Game.run();
+                               try {
+								Game.run();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
                                SwingUtilities.invokeLater(() -> btnLogin.setText("Ready!!"));
                    }).start();
                           // Game.run();
@@ -187,6 +193,44 @@ public class Game extends JFrame {
                        }
                    }
                });
+       
+       btnSysAdminLogin.addActionListener(
+               new ActionListener(){
+                   public void actionPerformed(ActionEvent e) {
+                       SysAdminDialog sysAdDlg = new SysAdminDialog(frame);
+                       sysAdDlg.setVisible(true);
+                       // if logon successfully
+                       if(sysAdDlg.isSucceeded()){
+                    	   new Thread(() -> {
+                               
+                    	   frame.getContentPane().add(btnRemovePlayer);
+                    	   frame.setVisible(true);
+                    	   btnRemovePlayer.addActionListener(new ActionListener()
+                    			   {
+                    		   			public void actionPerformed(ActionEvent e) {
+                    		   				
+                    		   				JTextField tfUsername = new JTextField(20);
+                    		   				JTextField tfEmail = new JTextField(20);
+                    		   				JPanel removeUser = new JPanel();
+                    		   				removeUser.add(new JLabel("Username :"));
+                    		   				removeUser.add(tfUsername);
+                    		   				removeUser.add(Box.createHorizontalStrut(15));
+                    		   				removeUser.add(new JLabel("Email :"));
+                    		   				removeUser.add(tfEmail);
+                    		   				JOptionPane.showConfirmDialog(null, removeUser, "Please enter Username and Email",
+                    		   						JOptionPane.OK_CANCEL_OPTION);
+                    		   				User.removeUser(tfUsername.getText().trim(), tfEmail.getText().trim());
+                    		   				
+                    		   				
+                    		   			}
+                    			   });
+                           
+                    	   SwingUtilities.invokeLater(() -> btnRemovePlayer.setText("Remove User"));
+                           }).start();
+                           
+                       }
+                   }
+               });
 
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        frame.setTitle("Login Monster Game");
@@ -195,6 +239,7 @@ public class Game extends JFrame {
        frame.setLocationRelativeTo(null); 
        frame.getContentPane().add(btnLogin);
        frame.getContentPane().add(btnRegister);
+       frame.getContentPane().add(btnSysAdminLogin);
        //frame.getContentPane().add(btnPlay);
        frame.setVisible(true);
        
@@ -209,7 +254,7 @@ public class Game extends JFrame {
        
    }
    
-   public static void run() 
+   public static void run() throws Exception
    {
 	   try {
 			 Game game;
@@ -230,12 +275,12 @@ public class Game extends JFrame {
    }
    
    /*Write to file function
-	 * Will write existing item array to "items.txt" external file which is loaded 
+	 * Will write existing user array to "Users.txt" external file which is loaded 
 	 * back into the system upon start.
 	 * Will write items to array when called upon exit also
 	 */
 
-	private void writeToFile() {
+	private void writeToFile() throws Exception {
 		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Users.txt")))) {
 			for (User user : User.users) {
 				if(user != null)
@@ -263,5 +308,7 @@ public class Game extends JFrame {
 		}
 
 	}
+	
+	
 
 }

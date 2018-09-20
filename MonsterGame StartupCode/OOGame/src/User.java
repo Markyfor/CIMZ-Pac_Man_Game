@@ -63,7 +63,7 @@ public class User extends RegisterDialog{
     	return dateOfBirth;
     }
 	
-    public static User addUser(String username, String password, String name, String dateOfBirth, String email) 
+    public static User addUser(String username, String password, String name,  String email, String dateOfBirth) 
 	{
 		boolean found = false;
     	for (int i = 0; i < users.size(); i++)
@@ -99,13 +99,15 @@ public class User extends RegisterDialog{
     
     public static void removeUser(String username, String email)
     {
-    	for (User user : User.users) 
+    	int idx = 0;
+    	for (int i = 0; i < User.users.size(); i++) 
     	{
-    	    if (username.compareToIgnoreCase(user.getUsername())==0)
-    	        User.users.remove(user);
-    	    	JOptionPane.showMessageDialog(null, "The Player : "+user.getUsername()+ " has been removed!",
+    	    if (username.compareToIgnoreCase(users.get(i).getUsername())==0 && email.compareToIgnoreCase(users.get(i).getEmail())==0)
+    	      	JOptionPane.showMessageDialog(null, "The Player : "+users.get(i).getUsername()+ " has been removed!",
     	    			email,JOptionPane.INFORMATION_MESSAGE);
+    	    	idx = i;
     	}
+    	User.users.remove(idx);
     }
 	
 }
