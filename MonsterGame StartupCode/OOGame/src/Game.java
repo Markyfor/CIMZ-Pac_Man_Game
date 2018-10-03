@@ -22,7 +22,9 @@ import java.util.Scanner;
 
 public class Game extends JFrame {
 
-   private final int TIMEALLOWED = 100;
+   private JComboBox cmbMessageList;
+
+   private final int TIMEALLOWED = Integer.parseInt((String)cmbMessageList.getSelectedItem());
 
    private JButton up = new JButton("up"); 
    private JButton down = new JButton("down"); 
@@ -153,6 +155,7 @@ public class Game extends JFrame {
        final JButton btnLogin = new JButton("Click to Login");
        final JButton btnSysAdminLogin = new JButton("System Administrator");
        final JButton btnRemovePlayer = new JButton("Remove User");
+       final JButton btnChangeTimer = new JButton("Change Timer");
 
        btnLogin.addActionListener(
                new ActionListener(){
@@ -204,6 +207,7 @@ public class Game extends JFrame {
                     	   new Thread(() -> {
                                
                     	   frame.getContentPane().add(btnRemovePlayer);
+                    	   frame.getContentPane().add(btnChangeTimer);
                     	   frame.setVisible(true);
                     	   btnRemovePlayer.addActionListener(new ActionListener()
                     			   {
@@ -222,6 +226,73 @@ public class Game extends JFrame {
                     		   				User.removeUser(tfUsername.getText().trim(), tfEmail.getText().trim());
                     		   				
                     		   				
+                    		   			}
+                    			   });
+                    	   btnChangeTimer.addActionListener(new ActionListener()
+                    			   {
+                    		   			public void actionPerformed(ActionEvent e) 
+                    		   			{
+                    		   				String [] timesStrings = {"Change Time to 50", "Change Time to 100",
+                    		   						"Change Time to 150", "Change Time to 200"};
+                    		   				JComboBox cmbMessageList = new JComboBox(timesStrings);
+                    		   				JLabel lblText = new JLabel("Change Timer");
+                    		   				JPanel changeTimer = new JPanel();
+                    		   				final JFrame frame = new JFrame();
+                    		   		        frame.setPreferredSize(new Dimension(200, 200));
+                    		   		        final JToolBar toolBar = new JToolBar();
+
+                    		   		        //Create the Menu Bar
+                    		   		        final JMenuBar menuBar = new JMenuBar();
+                    		   		        final JMenu menu = new JMenu("Options");
+                    		   		        menu.setMnemonic(KeyEvent.VK_A);
+                    		   		        menu.getAccessibleContext().setAccessibleDescription(
+                    		   		          "Option 1");
+                    		   		        menuBar.add(menu);
+                    		   		        JMenuItem menuItem = new JMenuItem("Option 2",
+                    	                         KeyEvent.VK_T);
+                    		   		        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+                    		   		        		KeyEvent.VK_1, ActionEvent.ALT_MASK));
+                    		   		        menuItem.getAccessibleContext().setAccessibleDescription(
+                    		   		        		"This doesn't really do anything");
+                    		   		        
+                    		   		        toolBar.add(changeTimer);
+                    		   		        JMenuItem menuItem1 = new JMenuItem("Options");
+                    		   		        menuItem1.addActionListener(this);
+                    		   		        menu.add(menuItem1);
+                    		   		        menu.add(new JMenuItem(new AbstractAction("Option 1") {
+                    		   		            public void actionPerformed(ActionEvent e) {
+                    		   		                JOptionPane.showMessageDialog(frame, "Option 1 selected");
+                    		   		            }
+                    		   		        }));
+                    		   		        menu.add(new JMenuItem(new AbstractAction("Option 2") {
+                    		   		            public void actionPerformed(ActionEvent e) {
+                    		   		                JOptionPane.showMessageDialog(frame, "Option 2 selected");
+                    		   		            }
+                    		   		        }));
+                    		   		        
+                    		   		        menu.add(menuItem);
+                    		   		        menu.add(menuItem1);
+
+                    		   		        final JButton btnOptions = new JButton("Options");
+                    		   		        btnOptions.addMouseListener(new MouseAdapter() {
+                    		   		            public void mousePressed(MouseEvent e) {
+                    		   		                menuBar.show();
+                    		   		            }
+                    		   		        });
+                    		   		        //toolBar.add(btnChangeTimer);
+
+                    		   		        //frame.getContentPane().add(toolBar, BorderLayout.NORTH);
+                    		   		        //frame.getContentPane().add(menuBar, BorderLayout.CENTER);
+                    		   		        //frame.getContentPane().add(menuItem, BorderLayout.NORTH);
+                    		   		        //frame.getContentPane().add(lblText, BorderLayout.CENTER);
+                    		   		        frame.getContentPane().add(cmbMessageList, BorderLayout.NORTH);
+                    		   		        //frame.getContentPane().add(menu, BorderLayout.NORTH);
+                    		   		        frame.setJMenuBar(menuBar);
+                    		   		        frame.pack();
+                    		   		        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    		   		        frame.setLocationRelativeTo(null);
+                    		   		        frame.setVisible(true);
+                    		   				//changeTimer.add(popup);
                     		   			}
                     			   });
                            
