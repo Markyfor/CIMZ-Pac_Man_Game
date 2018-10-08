@@ -14,6 +14,7 @@ public class BoardPanel extends JPanel implements ActionListener {
 
    private Player player;
    private Monster monster;
+   private Monster monster2;
    private Grid grid;
    private Graphics gr;
    private Game game;
@@ -22,7 +23,7 @@ public class BoardPanel extends JPanel implements ActionListener {
    private final int LMARGIN = 100;
    private final int TMARGIN = 100;
    
-   public BoardPanel(Grid g, Player p, Monster m)
+   public BoardPanel(Grid g, Player p, Monster m, Monster m2)
    {
         player = p;
        	grid = g;
