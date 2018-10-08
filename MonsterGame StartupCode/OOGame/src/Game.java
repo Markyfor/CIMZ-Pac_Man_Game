@@ -106,7 +106,7 @@ public class Game extends JFrame {
          if (newMonsterCell == player.getCell())
          	break;        
          
-         Cell newMonsterCell2 = monster2.move2();
+         Cell newMonsterCell2 = monster2.move();
          if(newMonserCell2 == player.getCell())
         	 break;
 
