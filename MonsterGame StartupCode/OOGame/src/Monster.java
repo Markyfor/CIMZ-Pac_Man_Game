@@ -18,6 +18,13 @@ public class Monster extends Moveable {
         currentCell = (grid.getCell(getCell(),getDirection()));
         return currentCell;
 	}
+	public Cell move2()
+	{
+		currentDirection = grid.getBestDirection2(currentCell, player.getCell());
+		currentCell = (grid.getCell(getCell(), getDirection()));
+		return currentCell;
+		
+	}
 	public boolean viewable()  // can be used for hiding
 	{
 		return canView;
