@@ -50,7 +50,7 @@ public class Game extends JFrame {
 	  player = new Player(grid,0,0);
 	  monster = new Monster(grid,player,5,5);
 	  monster2 = new Monster(grid,player,10,10);
-      bp = new BoardPanel(grid,player,monster);
+      bp = new BoardPanel(grid,player,monster, monster);
 
       // Create a separate panel and add all the buttons 
       JPanel panel = new JPanel();
@@ -107,7 +107,7 @@ public class Game extends JFrame {
          	break;        
          
          Cell newMonsterCell2 = monster2.move();
-         if(newMonserCell2 == player.getCell())
+         if(newMonsterCell2 == player.getCell())
         	 break;
 
          // update time and repaint
