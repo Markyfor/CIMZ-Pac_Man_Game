@@ -27,6 +27,7 @@ public class BoardPanel extends JPanel implements ActionListener {
         player = p;
        	grid = g;
        	monster = m;
+       	monster2 = m2;
        	gr = this.getGraphics(); 
    }
 
@@ -88,6 +89,14 @@ public class BoardPanel extends JPanel implements ActionListener {
            gr.fillRect(xCor(cell.col), yCor(cell.row), CELLWIDTH, CELLHEIGHT);
     	   gr.setColor(Color.white);
            gr.drawString("M",xCor(cell.col)+CELLWIDTH/3, yCor(cell.row)+2*CELLWIDTH/3);
+        }
+        if (monster2.viewable())
+        {
+           cell = monster2.getCell();
+    	   gr.setColor(Color.black);
+           gr.fillRect(xCor(cell.col), yCor(cell.row), CELLWIDTH, CELLHEIGHT);
+    	   gr.setColor(Color.white);
+           gr.drawString("M2",xCor(cell.col)+CELLWIDTH/3, yCor(cell.row)+2*CELLWIDTH/3);
         }
     }	
 }
