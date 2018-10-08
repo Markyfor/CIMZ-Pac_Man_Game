@@ -37,6 +37,7 @@ public class Game extends JFrame {
    private Player player;
    private Monster monster;
    private BoardPanel bp;
+   private Monster monster2;
    
    
    /* This constructor creates the main model objects and the panel used for UI.
@@ -48,6 +49,7 @@ public class Game extends JFrame {
 	  grid = new Grid();
 	  player = new Player(grid,0,0);
 	  monster = new Monster(grid,player,5,5);
+	  monster2 = new Monster(grid,player,10,10);
       bp = new BoardPanel(grid,player,monster);
 
       // Create a separate panel and add all the buttons 
@@ -103,6 +105,10 @@ public class Game extends JFrame {
          Cell newMonsterCell = monster.move();
          if (newMonsterCell == player.getCell())
          	break;        
+         
+         Cell newMonsterCell2 = monster2.move2();
+         if(newMonserCell2 == player.getCell())
+        	 break;
 
          // update time and repaint
          time++;
